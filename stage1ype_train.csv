@@ -1,0 +1,52 @@
+﻿每个样本的行为记录文件结构如下：
+<report report_id="EAE38ADA" report_version="2">
+<file_list file_uid="886358" file_name="e3cf8988230d19fc1467080d301e8f0218f10b182b6e276d9a07a35eba6eab3c.exe" file_error="0">
+<file>
+// 操作系统启动，样本开始执行后记录的样本行为
+<start_boot>
+<field value="start_boot"/> 
+<action_list>
+// 每个记录的样本动态行为一个action节
+<action name="LoadLibrary" api_name="LoadLibraryExW" ret_value="0" call_pid="396" call_name="1.exe" call_time="20:01:22.025">
+<apiArg_list count="3">
+<apiArg value="0"/>
+<apiArg value="0"/>
+<apiArg value="0"/>
+</apiArg_list>
+<exInfo_list count="1">
+<exInfo value="C:\WINDOWS\system32\user32.dll"/>
+</exInfo_list>
+</action>
+......
+</action_list>
+</start_boot>
+// 若样本有设置操作系统自启动项的行为，则有该reboot节
+<reboot>
+<field value="reboot"/>
+<action_list>
+<action ......
+......
+</action>
+</action_list>
+</reboot>
+// 样本行为记录结束
+</file>
+</file_list>
+</report>
+
+
+<action>节点说明
+api_name: 原始API名，参考MSDN等资料。
+说明：原始API指真实调用的那个系统函数。一个行为可能对应多种原始API，例如行为名称为CreateFile时，原始API可能是CreateFileA、CreateFileW、NtCreateFile等。
+对于某些无法对应到特定系统API的特殊行为，以Fake_xxx的虚拟API形式记录。
+ret_value: 原始API的返回值，参考MSDN等资料。
+call_pid：调用该API的进程ID；
+call_name：调用该API的进程名；
+call_time：调用该API的时间；
+apiArg_list count：原始API参数个数，参考MSDN等资料；
+apiArg_list value：原始API参数值，参考MSDN等资料；
+exInfo_list count：额外参数的个数；
+exInfo value：额外参数的值；
+注意：不同行为对应的额外参数不同。例如WriteFile行为对应的额外参数值为“被写入的文件的路径”。
+
+
